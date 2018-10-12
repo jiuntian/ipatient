@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Login | iPatient</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="static/style.css">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>UMMC</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <p>iPatient</p>
+                <li class="active">
+                    <a href="/index">Home</a>
+                </li>
+                <li>
+                    <a href="/diagnosis">Diagnosis</a>
+                </li>
+				<li>
+                    <a href="/appointment">Appointment</a>
+                </li>
+				<li>
+                    <a href="/medication">Medication</a>
+                </li>
+				<li>
+                    <a href="/map">Map</a>
+                </li>
+				<li>
+                    <a href="/education">Patient Education</a>
+                </li>
+            </ul>
+			{% if session['logged_in'] %}
+			{% else %}
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href="/signup" class="download">Sign Up</a>
+                </li>
+                <li>
+                    <a href="/login" class="article">Sign In</a>
+                </li>
+            </ul>
+			{% endif %}
+            
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <!-- <span>Toggle Sidebar</span> -->
+                    </button>
+                    
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        
+                    </div>
+                </div>
+            </nav>
+			<h2>Sign Up</h2>
+            {% block body %}
+			{% if session['logged_in'] %}
+			<p>You're logged in already!</p>
+			{% else %}
+			<form action="/signup" method="POST">
+				<div class="form-group">
+					<label for="exampleInputEmail1">Username</label>
+					<input type="username" name="username" class="form-control" placeholder="Enter username">
+					<small id="emailHelp" class="form-text text-muted">Your registered username.</small>
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">Password</label>
+					<input type="password" name="password" class="form-control" placeholder="Enter password">
+					<small id="emailHelp" class="form-text text-muted">Your password.</small>
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">NAME</label>
+					<input type="name" name="name" class="form-control" placeholder="Name">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">NRIC</label>
+					<input type="ic" name="ic" class="form-control" placeholder="Enter NRIC">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">Gender</label>
+					<input type="gender" name="gender" class="form-control" placeholder="Enter gender">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">ADDRESS</label>
+					<input type="address" name="address" class="form-control" placeholder="Enter address">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">Mobile No</label>
+					<input type="mobile" name="mobile" class="form-control" placeholder="Enter phone number">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">Next of kin</label>
+					<input type="nok" name="nok" class="form-control" placeholder="Enter next of kin">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">Next of kin phone number</label>
+					<input type="nok_no" name="nok_no" class="form-control" placeholder="Enter next of kin's number">
+				</div>
+			  <br>
+			  <input type="submit" class="btn btn-primary" value="Sign up">
+			</form>
+			{% endif %}
+			{% endblock %}
+		</div>
+    </div>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+
+</html>
