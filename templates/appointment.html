@@ -18,7 +18,7 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
+       
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -47,9 +47,9 @@
 				<li>
                     <a href="/map">Map</a>
                 </li>
-				<li>
+				<!--<li>
                     <a href="/education">Patient Education</a>
-                </li>
+                </li>-->
             </ul>
 			{% if session['logged_in'] %}
 			{% else %}
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </nav>
-            <h2>Your Appointment</h2>
+            <h2>Your Appointment Reminder</h2>
             {% if session['logged_in'] %}
 			
 			<ul id="navigation">
@@ -93,7 +93,7 @@
 					<h5 class="card-title">{{ item.department }}</h5>
 					<h6 class="card-subtitle mb-2 text-muted" >{{item.date}}</h6>
 					<p class="card-text">{{item.time}}</p>
-					<a href="/bill/{{item.id}}" class="card-link">Show ticket</a>
+					<!--<a href="/bill/{{item.id}}" class="card-link">Show ticket</a>-->
 				  </div>
 				</div>
 			{% endfor %}
@@ -101,7 +101,7 @@
 			
 			<p>Please check-in 30 minutes earlier at counter</p>
 			<p>You may check-in by click on the date above</p>
-			<a href="/makeappointment" class="btn btn-info" role="button">Make New Appointment</a>
+			<a href="/makeappointment" class="btn btn-info" role="button">Set New Appointment Reminder</a>
 			{% else %}
 			<p>Please login <a href="/index">here</a>.</p>
 			{% endif %}

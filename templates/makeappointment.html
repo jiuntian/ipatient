@@ -19,6 +19,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+	
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -47,9 +49,9 @@
 				<li>
                     <a href="/map">Map</a>
                 </li>
-				<li>
+				<!--<li>
                     <a href="/education">Patient Education</a>
-                </li>
+                </li>-->
             </ul>
 			{% if session['logged_in'] %}
 			{% else %}
@@ -82,7 +84,7 @@
                     </div>
                 </div>
             </nav>
-            <h2>Make Appointment</h2>
+            <h2>Set Appointment Reminder</h2>
             {% if session['logged_in'] %}
 			
 			
@@ -104,6 +106,7 @@
 				
 				<div class="form-group">
 					<label for="exampleInputEmail1">Date</label>
+					<!--
 					<p style="margin: auto">November 2018</p>
 					<table class="table table-condensed table-bordered table-striped">
 						<thead>
@@ -165,17 +168,26 @@
 							</tr>
 						</tbody>
 					</table>
+				-->
 					<input id="date" type="date" name="date" class="form-control" placeholder="Enter date">
 					<small id="emailHelp" class="form-text text-muted">The date you want to make appointment.</small>
 				</div>
-				
+			
 				<div class="form-group">
 					<label for="exampleInputEmail1">Time</label>
 					<input type="time" name="time" class="form-control" placeholder="Enter Time">
 					<small id="emailHelp" class="form-text text-muted">The time you preferred.</small>
 				</div>
+				<h4>Reminder Notification</h4>
+    
+				<div class="checkbox">
+				<label>
+					<input type="checkbox" data-toggle="toggle">
+					Reminder Notification
+				</label>
+				</div>
 			  <br>
-			  <input type="submit" class="btn btn-primary" onclick="myFunction()" value="Make payment">
+			  <input type="submit" class="btn btn-primary" onclick="myFunction()" value="Set Reminder">
 			</form>
 			
 			{% endif %}
@@ -191,8 +203,18 @@
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    
     <script type="text/javascript">
         $(document).ready(function () {
+			function toggle() {
+				var x = document.getElementById("lie");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
             $("#sidebar").mCustomScrollbar({
                 theme: "minimal"
             });
@@ -242,7 +264,9 @@
 			$('#d30').on('click', function () {
 				document.getElementById('date').value = "2018-11-30";
 			});
-			
+			$('#clickme').on('click', function(){
+				toggle();
+			});
 			
 			var form = document.getElementById('f');
 
