@@ -1,0 +1,30 @@
+.switcher{
+    color:transparent;
+}
+
+.switcher.enabled{
+    color:green;
+}
+.hidetext{
+  
+}
+.ok {
+   content:url(img/ok.jpg);
+}​
+.info-text {
+	font-size: 20px;
+}
+.prompt {
+   display:none;
+    position:absolute;
+    top:40%;
+    left:40%;
+    padding:10px;
+    border:1px solid #ccc;
+    -webkit-box-shadow: 3px 3px 7px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    3px 3px 7px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         3px 3px 7px 0px rgba(50, 50, 50, 0.75);
+}
+.show {
+    display:block;
+}

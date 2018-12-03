@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head lang="en-US">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Control Page">
+    <meta name="author" content="Jiuntian">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>WebPlant | Control Panel</title>
+	<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+    <script src="js/jquery-1.12.0.min.js"></script>
+	<script src="js/jquery-2.1.1.js"></script>
+	<script src="jquery.js"></script>
+	<script type="text/javascript" src="/webiopi.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<link href="css/agency.css" rel="stylesheet">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="myfunc.css" rel="stylesheet">
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="css/agency.css" rel="stylesheet">
+	
+	<style>
+
+.aspect-ratio {
+  position: relative;
+  
+  height: 0;
+  padding-bottom: 50%;
+  padding-left:50%;
+}
+.aspect-ratio iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0; top: 0;
+}
+.fluidMedia {
+    position: relative;
+    padding-bottom: 56.25%; /* proportion value to aspect ratio 16:9 (9 / 16 = 0.5625 or 56.25%) */
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+}
+
+.fluidMedia iframe {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+#live{
+	background-image: url(../img/cactus_.jpg);
+
+}
+
+#info{
+	background-image: url(../img/bg.jpg);
+
+}
+
+#webcam img{
+	left:50%; transform: translate(-50%,0); position: absolute; z-index: 1;
+}
+</style>
+	<!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/agency.js"></script>
+	<script type="text/javascript">
+	
+	$("#sensor1").each(function(){
+        if ($(this).text() <= 34){
+            $("#temp-pic").addClass("ok");
+            
+            };
+        }
+);
+	$().on("click",function(){
+   var url = $(this).attr("src");
+   $(".prompt").append("<textarea>" + url +"</textarea>");
+   $(".prompt").addClass("show");
+});
+$("iframe.live").fluidWidth();
+
+
+</script>
+
+<script type="text/javascript">
+
+/* Copyright (C) 2007 Richard Atterer, richardĀ©atterer.net
+   This program is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License, version 2. See the file
+   COPYING for details. */
+
+var imageNr = 0; // Serial number of current image
+var finished = new Array(); // References to img objects which have finished downloading
+var paused = false;
+
+function createImageLayer() {
+  var img = new Image();
+  img.style.position = "absolute";
+  img.style.zIndex = -1;
+  img.onload = imageOnload;
+  img.onclick = imageOnclick;
+  img.src = "http://192.168.0.110:8080/?action=snapshot&n=" + (++imageNr);
+  var webcam = document.getElementById("webcam");
+  webcam.insertBefore(img, webcam.firstChild);
+}
+
+// Two layers are always present (except at the very beginning), to avoid flicker
+function imageOnload() {
+  this.style.zIndex = imageNr; // Image finished, bring to front!
+  while (1 < finished.length) {
+    var del = finished.shift(); // Delete old image(s) from document
+    del.parentNode.removeChild(del);
+  }
+  finished.push(this);
+  if (!paused) createImageLayer();
+}
+
+function imageOnclick() { // Clicking on the image will pause the stream
+  paused = !paused;
+  if (!paused) createImageLayer();
+}
+
+</script>
+
+    <script type="text/javascript">
+	
+    webiopi().ready(init);
+	
+
+    // defines function passed previously to webiopi().ready()
+    function init() {
+        webiopi().callMacro("osIp", [], updateIp);
+		
+		var status = document.getElementById('sensor3').textContent;
+		if(status == "On"){
+			document.getElementById('light').src = "img/on.png"
+		}
+	
+		else if (status == "Off"){
+			document.getElementById('light').src = "img/off.png"
+		}
+		
+		// automatically refresh UI each seconds
+        setInterval(updateUI, 1500);
+		
+		
+    }
+
+    // function called through setInterval
+    function updateUI() {
+        // call getSensor macro for Arduino analog channel 0-3
+        webiopi().callMacro("getSensor", 0, sensorCallback);
+        webiopi().callMacro("getSensor", 1, sensorCallback);
+        webiopi().callMacro("getSensor", 2, sensorCallback);
+        webiopi().callMacro("getSensor", 3, sensorCallback);
+		webiopi().callMacro("getSensor", 4, sensorCallback);
+		webiopi().callMacro("osTemp", [], updateTemp);
+		webiopi().callMacro("osUP", [], updateUP);
+    }    
+	
+	
+	
+	
+    // callback function used to display sensor data
+    function sensorCallback(macroName, channel, data) {
+                // use jQuery to change spans content
+        $("#sensor"+channel).text(data);
+    }
+	
+	function updateTemp(macroName, channel, data) {
+                // use jQuery to change spans content
+        $("#ostemp").text(data);
+    }
+	function updateIp(macroName, channel, data) {
+                // use jQuery to change spans content
+        $("#osip").text(data);
+    }
+
+	function updateUP(macroName, channel, data) {
+                // use jQuery to change spans content
+        $("#osup").text(data);
+    }
+	
+	function addlittle(){
+		webiopi().callMacro("serial", "3f", updateUI);
+	}
+	
+	function addmany(){
+		webiopi().callMacro("serial", "7f", updateUI);
+	}
+	
+	function onlight(){
+		webiopi().callMacro("serial", "9f", updateUI);
+	}
+	
+	function offlight(){
+		webiopi().callMacro("serial", "0f", updateUI);
+	}
+	
+	function light(){
+	var status = document.getElementById('sensor3').textContent;
+	
+	if(status == "On"){
+	offlight();
+	document.getElementById('light').src = "img/off.png"
+	}
+	
+	else if (status == "Off"){
+	onlight();
+	document.getElementById('light').src = "img/on.png"
+	}
+
+}
+    </script>
+	
+</head>
+<body id="page-top" class="index" data-spy="scroll" onload="createImageLayer();">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"   >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand page-scroll" href="#page-top" style="color: #3e50b4;">WebPlant</a>
+        </div>
+        
+		<div id="navbar" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+			
+            <li class="hidden"><a href="#page-top">Home</a></li>
+			<li><a href="#info" class="page-scroll">Info</a></li>
+            <li><a href="#live" class="page-scroll">Live View</a></li> 
+			<li><a href="#config" class="page-scroll">Configuration</a></li>
+			<li><a href="#about" class="page-scroll">About</a></li>
+
+			
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--container-->
+    </nav> <!-- navbar -->
+<header>
+	
+	<div class="container">
+		<div class="intro-text">
+			<div class="intro-lead-in" style=""></div>
+			<!--
+			<div class="intro-lead-in">Web page for control of WebPlant. You can take control on your machines here.</div>
+			-->
+			
+			<!--
+			<a class="btn page-scroll btn-xl" href="#help">Need help? &raquo;</a>
+			-->
+	</div>
+	</div>
+</header>
+	<div class="prompt"></div>
+
+	<section id="info" class="bg-light-gray">
+	<div class="container">
+	<div class="row">
+	<div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Device Status</h2>
+                    <h3 class="section-subheading text-muted">Check out your device status.</h3>
+                </div>
+	<div class="col-md-4 text-center">
+	
+	<img src="img/moist.png" alt="Moisture of Soil" style="width:194px;height:250px;">
+    <div id="sen0" class="info-text"><h4 class="service-heading">Moist of Soil: <span calss="switcher" id="sensor0">Normal</span></h4><span id="message"></span></div></div>
+	
+	<div class="col-md-4 text-center">
+	<img src="img/temp.png" alt="Temperature" style="width:64px;height:250px;">
+    <div id="temp"><h4 class="service-heading">Surround Temperature: <span id="sensor1" class="bold">35</span>°C</h4></div></div>
+	
+	<div class="col-md-4 text-center">
+	<img src="img/water.png" alt="Water Tank Level" style="width:138px;height:250px;">
+    <div><h4 class="service-heading">Water Tank Level: <span calss="switcher2" id="sensor2">Full</span></h4></div></div>
+	
+	
+	
+    <!--
+	<div>Sensor 3: <span calss="switcher3" id="sensor3"></span></div>
+	-->
+    
+	</div>
+	<div class="row">
+	<div class="col-md-4 text-center">
+	<img src="img/cpu.svg" alt="System Temperature" style="width:138px;height:250px;">
+	<div><h4 class="service-heading">System Temperature: <span calss="switcher2" id="ostemp">40</span>°C</h4></div></div>
+	
+	<div class="col-md-4 text-center">
+	<img src="img/cloud.png" alt="IP Address" style="width:228px;height:250px;">
+	<div><h4 class="service-heading">IP: <span calss="switcher2" id="osip">192.168.1.10</span></h4></div></div>
+	
+	<div class="col-md-4 text-center">
+	<img src="img/time.png" alt="Uptime since boot" style="width:250px;height:250px;">
+	<div><h4 class="service-heading">Uptime: <span calss="switcher2" id="osup">1 hour 56 minutes</span></h4></div></div>
+	
+	</div>
+	
+	<div class="row">
+	<div class="col-md-4 text-center">
+	<img id="light" src="img/on.png" alt="Photosynthetic Light" style="width:120px;height:180px;" onclick="light()">
+    <div><h4 class="service-heading">Photosynthesis Light: <span calss="switcher2" id="sensor3">On</span></h4></div>
+	</div>
+	
+	<div class="col-md-4 text-center">
+	<img src="img/pressure.png" alt="Atmosphere Pressure" style="width:180px;height:180px;">
+    <div><h4 class="service-heading">Atmosphere Pressure: <span calss="switcher2" id="sensor4">745</span> mmHg</h4></div></div>
+	
+	<div class="col-md-4 text-center">
+	<img id="light" src="img/nature.png" alt="Fertilizer" style="width:180px;height:180px;" onclick="addlittle()">
+    <div><h4 class="service-heading">Fertilizer: OK</h4></div>
+	</div>
+	
+	</div>
+	
+	</div> <!--container-->
+	</section><!-- section info-->
+	
+	<section id="live" class="bg-light-red" style="height: 1000px;"> <!--  -->
+	<div class="row">
+	<div class="col-lg-12 text-center">
+	
+                    <h2 class="section-heading">Live View</h2>
+                    <h3 class="section-subheading text-muted" style="color:#236060">Live view of your plant</h3>
+					
+					<!-- 
+					<!-- mobile version 
+					
+					<div class="aspect-ratio center" class="fluidMedia">
+					<iframe class="visible-xs visible-sm"  src="live.html" frameborder="0" > </iframe>
+					
+					</div>
+					<!-- desktop 
+					<iframe class="hidden-xs hidden-sm" class="live" src="live.html" frameborder="0" sandbox="allow-scripts" height="500px" width="660px" style="position: relative; bottom: 660px;"></iframe>
+					-->
+					
+					<div id="webcam"><img src="web2.png" /></div>
+						
+				</div>
+			</div>
+	</section>
+	<!--
+	<section id="config" class="bg-light-gray">
+		<div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Configuration</h2>
+					<div class="col-lg-6 text-center">
+						<div>Fertilizer</div>
+						<div>
+						<button type="button" class="btn btn-success btn-lg" id="fersmall" onclick="addlittle()">Add Little</button></div>
+						<div><button type="button" class="btn btn-info btn-lg" id="ferbig" onclick="addmany()">Add Many</button>
+						</div>
+					
+					</div>
+                </div>
+            </div>
+	</section>
+	-->
+	<!--
+	<section  id="help" class="bg-light-yellow"> 
+	<div class="row">
+	<div class="col-lg-12 text-center">
+	
+                    <h2 class="section-heading">Help</h2>
+                    <h3 class="section-subheading text-muted"  style="color:#236060">Frequently asked Questions(FAQ) </h3>
+					<iframe frameborder="0" width="100%" height="550px" src="faq.htm"></iframe>
+                </div>
+			</div>
+	</section>
+	
+	<section id="about" class="bg-light-gray">
+		<div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">About this device</h2>
+                    <h3 class="section-subheading text-muted">This is for helping people to planting easily.</h3>
+                </div>
+            </div>
+	</section>
+	-->
+	
+	<hr>
+	<footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; Jiuntian 2016</span>
+                </div>
+                
+                
+            </div>
+        </div>
+    </footer>
+<script src="js/jquery-1.12.0.min.js"></script>
+<script src="js/classie.js"></script>	
+<script src="js/cbpAnimatedHeader.js"></script>	
+<script src="js/jqBootstrapValidation.js"></script>	
+<script src="js/agency.js"></script>	
+	
+</body>
+</html>
