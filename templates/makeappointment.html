@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </nav>
-            <h2>Set Appointment Reminder</h2>
+            <h2>Make Appointment</h2>
             {% if session['logged_in'] %}
 			
 			
@@ -106,7 +106,7 @@
 				
 				<div class="form-group">
 					<label for="exampleInputEmail1">Date</label>
-					<!--
+					<
 					<p style="margin: auto">November 2018</p>
 					<table class="table table-condensed table-bordered table-striped">
 						<thead>
@@ -168,7 +168,7 @@
 							</tr>
 						</tbody>
 					</table>
-				-->
+				
 					<input id="date" type="date" name="date" class="form-control" placeholder="Enter date">
 					<small id="emailHelp" class="form-text text-muted">The date you want to make appointment.</small>
 				</div>
@@ -178,16 +178,18 @@
 					<input type="time" name="time" class="form-control" placeholder="Enter Time">
 					<small id="emailHelp" class="form-text text-muted">The time you preferred.</small>
 				</div>
+				<!--
 				<h4>Reminder Notification</h4>
-    
+				
 				<div class="checkbox">
 				<label>
 					<input type="checkbox" data-toggle="toggle">
 					Reminder Notification
 				</label>
 				</div>
+				-->
 			  <br>
-			  <input type="submit" class="btn btn-primary" onclick="myFunction()" value="Set Reminder">
+			  <input type="submit" class="btn btn-primary" onclick="myFunction()" value="Make Payment">
 			</form>
 			
 			{% endif %}

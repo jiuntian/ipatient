@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </nav>
-            <h2>Your Appointment Reminder</h2>
+            <h2>Your Appointment</h2>
             {% if session['logged_in'] %}
 			
 			<ul id="navigation">
@@ -93,7 +93,7 @@
 					<h5 class="card-title">{{ item.department }}</h5>
 					<h6 class="card-subtitle mb-2 text-muted" >{{item.date}}</h6>
 					<p class="card-text">{{item.time}}</p>
-					<!--<a href="/bill/{{item.id}}" class="card-link">Show ticket</a>-->
+					<a href="/bill/{{item.id}}" class="card-link">Show ticket</a>
 				  </div>
 				</div>
 			{% endfor %}
@@ -101,7 +101,7 @@
 			
 			<p>Please check-in 30 minutes earlier at counter</p>
 			<p>You may check-in by click on the date above</p>
-			<a href="/makeappointment" class="btn btn-info" role="button">Set New Appointment Reminder</a>
+			<a href="/makeappointment" class="btn btn-info" role="button">Make Appointment</a>
 			{% else %}
 			<p>Please login <a href="/index">here</a>.</p>
 			{% endif %}
